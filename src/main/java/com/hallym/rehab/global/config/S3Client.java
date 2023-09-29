@@ -23,6 +23,9 @@ public class S3Client {
     @Value("${cloud.aws.region.static}")
     private String regionName;
 
+    /**
+     * Provides an interface for accessing the Amazon S3 or Naver Cloud Object Storage
+     */
     public AmazonS3 getAmazonS3() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))

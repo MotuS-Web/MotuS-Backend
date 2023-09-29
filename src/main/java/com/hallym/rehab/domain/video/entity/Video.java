@@ -19,29 +19,29 @@ public class Video extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vno; // video PK
 
-    private String title; // 동작 제목
+    private String title; // video title
 
-    private String description; // 동작 설명
-
-    @Enumerated(value = EnumType.STRING)
-    private Category category; // 카테고리
+    private String description; // video description
 
     @Enumerated(value = EnumType.STRING)
-    private Position position; // 자세
+    private Category category; // search condition
 
-    private Long frame; // AI 에서 쓸 영상 프레임
+    @Enumerated(value = EnumType.STRING)
+    private Position position; // search condition
 
-    private double playTime; // Client 에서 쓸 영상 시간
+    private Long frame; // Video frame
 
-    private String videoURL; // 동영상 URL (Client, AI 서버에서 사용)
+    private double playTime; // Video playTime
 
-    private String jsonURL; // json URL (Client, AI 서버에서 사용)
+    private String videoURL; // video URL (Used by Cilent and AI Server)
 
-    private String thumbnailURL; // thumbnail URL (Cilent 및 AI 서버에서 사용)
+    private String jsonURL; // json URL (Used by Cilent and AI Server)
 
-    private String videoPath; // Object Storage 에서의 video 경로 (삭제시 사용)
+    private String thumbnailURL; // thumbnail URL (Used by Cilent and AI Server)
 
-    private String jsonPath; // Object Storage 에서의 json 경로 (삭제시 사용)
+    private String videoPath; // (Used when deleting)
 
-    private String thumbnailPath; // Object Storage 에서의 thumbnail 경로 (삭제시 사용)
+    private String jsonPath; // (Used when deleting)
+
+    private String thumbnailPath; // (Used when deleting)
 }
