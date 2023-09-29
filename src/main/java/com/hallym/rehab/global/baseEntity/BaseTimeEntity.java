@@ -12,8 +12,8 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter
-@MappedSuperclass //Entity들이 상속할 경우 해당 클래스 필드들도 칼럼으로 인식
-@EntityListeners(value = { AuditingEntityListener.class }) //Audting 기능 추가
+@MappedSuperclass // When entities inherit, the class fields are also recognized as columns.
+@EntityListeners(value = { AuditingEntityListener.class }) // add Audting
 public class BaseTimeEntity {
 
     @CreatedDate
