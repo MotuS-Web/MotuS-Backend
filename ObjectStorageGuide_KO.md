@@ -11,13 +11,13 @@
 # 개요
   * [왜 사용하여야 하는지?](#왜-사용하여야-하는지)
   * [아키텍쳐](#아키텍쳐)
-  * [1. Access-key and Secret-key 발급](#1-access-key-and-secret-key-발급)
-  * [2. Object Storage bucket 생성](#2-object-storage-bucket-생성)
-  * [3. gradle을 통한 aws-java-sdk-s3 의존성 주입](#3-gradle을-통한-aws-java-sdk-s3-의존성-주입)
-  * [4. application.yml 기입](#4-applicationyml-기입)
-  * [5. S3Client 설정파일 만들기](#5-s3client-설정파일-만들기)
-  * [6. API 사용법](#6-api-사용법-설명)
-  * [7. Test 코드를 통한 S3 Client 시작하기](#7-Test-코드를-통한-S3-Client-시작하기)
+  * [Access-key and Secret-key 발급](#1-access-key-and-secret-key-발급)
+  * [Object Storage bucket 생성](#2-object-storage-bucket-생성)
+  * [gradle을 통한 aws-java-sdk-s3 의존성 주입](#3-gradle을-통한-aws-java-sdk-s3-의존성-주입)
+  * [application.yml 기입](#4-applicationyml-기입)
+  * [S3Client 설정파일 만들기](#5-s3client-설정파일-만들기)
+  * [API 사용법](#6-api-사용법-설명)
+  * [Test 코드를 통한 S3 Client 시작하기](#7-Test-코드를-통한-S3-Client-시작하기)
  
 <br/>
 
@@ -249,15 +249,15 @@ public String deleteVideo(Long vno) {
 
 ## 7. Test 코드를 통한 S3 Client 시작하기
 > [Test Code](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/test/java/com/hallym/rehab/global/config/S3ClientTest.java)
-1. s3Client 의존성 주입 및 bucketName 세팅
+### 7-1. S3Client 의존성 주입 및 bucketName 세팅
 ```java
 @Autowired
 S3Client s3Client;
 @Value("${cloud.aws.s3.bucket}")
 private String bucketName; // your bucketName
 ```
-2. 버킷 목록 조회
-- s3.listBuckets() 메소드를 이용해 bucket들을 조회합니다.
+### 7-2. 버킷 목록 조회
+1. s3Client에 설정한 계정에 대한 bucket 목록을 나열합니다.
 ```java
 @Test
 public void bucketList() {
@@ -276,8 +276,9 @@ public void bucketList() {
     }
 }
 ```
-3. 버킷에 파일 업로드
-- local에 있는 sample 파일을 업로드합니다.
+### 7-3. 버킷에 파일 업로드
+1. local에 있는 sample 파일을 업로드합니다.
+2. 서비스 로직과는 달리 filePath를 이용해 File 객체를 바로 만들 수 있습니다.
 ```java
 @Test
 public void uploadFile() {
@@ -285,12 +286,12 @@ public void uploadFile() {
 
     String bucketName = "your bucketName";
     // upload local file
-    String objectName = "video/video1";
+    String objectPath = "video/video1";
     String filePath = "src/main/resources/sample.mp4";
 
     try {
-        s3.putObject(bucketName, objectName, new File(filePath));
-        System.out.format("Object %s has been created.\n", objectName);
+        s3.putObject(bucketName, objectPath, new File(filePath));
+        System.out.format("Object %s has been created.\n", objectPath);
     } catch (AmazonS3Exception e) {
         e.printStackTrace();
     } catch(SdkClientException e) {
@@ -298,20 +299,20 @@ public void uploadFile() {
     }
 }
 ```
-4. 버킷 삭제
- - s3.deleteObject() 메소드를 이용해 bucket에서 해당 파일을 삭제합니다.
+### 7-4. 버킷 삭제
+1. objectPath를 이용해서 bucket에서 해당 파일을 삭제합니다.
 ```java
 @Test
 public void deleteFile() {
     AmazonS3 s3 = s3Client.getAmazonS3();
 
     String bucketName = "your bucketName";
-    String objectName = "video/video1";
+    String objectPath = "video/video1";
 
     // delete object
     try {
-        s3.deleteObject(bucketName, objectName);
-        System.out.format("Object %s has been deleted.\n", objectName);
+        s3.deleteObject(bucketName, objectPath);
+        System.out.format("Object %s has been deleted.\n", objectPath);
     } catch (AmazonS3Exception e) {
         e.printStackTrace();
     } catch(SdkClientException e) {
