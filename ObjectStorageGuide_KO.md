@@ -7,6 +7,18 @@
 - Naver Cloud를 사용하지 않아도 되며 AWS의 S3와 호환됩니다. 
 - Naver Cloud의 [Java용 AWS SDK 가이드](https://guide.ncloud-docs.com/docs/storage-storage-8-1) 를 참조하였습니다. 
 - Last Edit : 2023.09.30 
+
+# 목차 
+  * [왜 사용하여야 하는지?](#왜-사용하여야-하는지)
+  * [아키텍쳐](#아키텍쳐)
+  * [1. Access-key and Secret-key 발급](#1-access-key-and-secret-key-발급)
+  * [2. Object Storage bucket 생성](#2-object-storage-bucket-생성)
+  * [3. gradle을 통한 aws-java-sdk-s3 의존성 주입](#3-gradle을-통한-aws-java-sdk-s3-의존성-주입)
+  * [4. application.yml 기입](#4-applicationyml-기입)
+  * [5. S3Client 설정파일 만들기](#5-s3client-설정파일-만들기)
+  * [6. API 사용법 설명](#6-api-사용법-설명)
+
+
  
 <br/>
 
@@ -35,7 +47,12 @@
 ![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/9f6ce919-f691-4488-b562-919b388f85e4)
 <br/>
 
-## 3. application.yml 기입
+## 3. gradle을 통한 aws-java-sdk-s3 의존성 주입
+```gradle
+implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
+```
+
+## 4. application.yml 기입
 - 발급받은 키 정보와 region, bucket 이름 등을 spring boot 의 application.yml 에 기입합니다.
 - 민감한 정보들이니 별도의 설정 파일을 만들어 main yml에서 불러들이는 방식을 사용합니다.
 ```yml
@@ -53,10 +70,7 @@ cloud:
       bucket: "your bucket name"
 ```
 
-## 4. gradle을 통한 aws-java-sdk-s3 의존성 주입
-```gradle
-implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
-```
+
 ## 5. S3Client 설정파일 만들기
 
 - @Configuration을 통해 설정파일을 만들어줍니다. (싱글톤으로 관리하기 위함)
@@ -94,7 +108,7 @@ public class S3Client {
 - Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다.
 - URL은 사용자가 실제로 Object를 얻고자 할 때 사용되는 URL입니다. 이는 S3 SDK에서 제공하지 않지만 패턴이 일정하므로 직접 만들어 저장합니다.
   
-### 6-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
+### 6-1 서비스로직에서 사용할 의존성들을 주입받습니다.
 ```java
 @Value("${cloud.aws.s3.bucket}")
 private String bucketName; // your bucketName
