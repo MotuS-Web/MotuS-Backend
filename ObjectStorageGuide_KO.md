@@ -58,7 +58,14 @@ cloud:
 
 <br/>
 
-## 4. S3Client 설정파일 만들기
+## 4. gradle을 통한 aws-java-sdk-s3 의존성 주입
+```gradle
+implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
+```
+
+<br/>
+
+## 5. S3Client 설정파일 만들기
 
 - @Configuration을 통해 설정파일을 만들어줍니다. (싱글톤으로 관리하기 위함)
 - Amazon의 S3 SDK를 사용하므로 AmazonS3와 연결하기위한 객체를 만들어서 반환 받습니다.
@@ -91,7 +98,7 @@ public class S3Client {
 
 <br/>
 
-## 5. API 사용법 설명
+## 6. API 사용법 설명
 >  [Video Service 구현 코드](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/main/java/com/hallym/rehab/domain/video/service/VideoServiceImpl.java)
 - Path와 URL의 차이점
 - Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다.
@@ -99,7 +106,7 @@ public class S3Client {
 
   <br/>
   
-### 5-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
+### 6-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
 ```java
 @Value("${cloud.aws.s3.bucket}")
 private String bucketName; // your bucketName
@@ -107,7 +114,7 @@ private final S3Client s3Client; // connect to S3
 private final VideoRepository videoRepository;
 ```
 
-### 5-2. upload 구현
+### 6-2. upload 구현
 1. createVideo 메소드 부분에서 MultipartFile로 업로드 할 파일들을 받습니다.
 2. uploadFileToS3 메소드를 만들어 video 파일 및 json 파일 들을 매개변수로 전달합니다.
 ```java 
@@ -185,7 +192,7 @@ public String createVideo(VideoRequestDTO videoRequestDTO) {
 }
 ```
 
-### 5-3 delete 구현
+### 6-3 delete 구현
 1. Video의 PK를 전달 받습니다.
 2. PK를 이용해 Video 객체를 얻고 파일들의 Path를 꺼냅니다.
 ```java
