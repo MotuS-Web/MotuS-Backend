@@ -2,21 +2,20 @@
 
 <br/>
 
-> 본 문서는 Naver Cloud 에서 서비스하는 Object Storage API 사용법에 대해 기술합니다. <br/>
-> 사용 분야는 영상 파일, json파일, 썸네일파일 업로드 입니다. <br/>
-> Naver Cloud를 사용하지 않아도 되며 AWS의 S3와 호환됩니다. <br/>
-> Naver Cloud의 [Java용 AWS SDK 가이드](https://guide.ncloud-docs.com/docs/storage-storage-8-1) 를 참조하였습니다. <br/>
-> Last Edit : 2023.09.30 <br/>
+- 본 문서는 Naver Cloud 에서 서비스하는 Object Storage API 사용법에 대해 기술합니다. 
+- 사용 분야는 영상 파일, json파일, 썸네일파일 업로드 입니다. 
+- Naver Cloud를 사용하지 않아도 되며 AWS의 S3와 호환됩니다. 
+- Naver Cloud의 [Java용 AWS SDK 가이드](https://guide.ncloud-docs.com/docs/storage-storage-8-1) 를 참조하였습니다. 
+- Last Edit : 2023.09.30 
  
 <br/>
 
 ## 왜 사용하여야 하는지?
-> 본문에 앞서 Object Storage를 왜 사용하였는지에 대해 언급하고자 합니다. <br/>
-> 먼저 저희가 만든 오픈소스의 특성상 Client뿐만 아니라 AI Server와도 데이터를 주고 받습니다. <br/>
-> Client에서 BE 서버로 전송한 파일들을 Object Storage에 저장하면 AI Server 및 Client 측에서 이를 사용하는 구조이므로 BE에서 받는 API Request 수를 줄이며,
-> URL 형태로 접근 가능하다는 장점으로 인해 File 전송을 통한 레이턴시가 적어집니다.<br/>
-> 서버 내부에 파일을 저장한다면 서버 용량 증가 뿐만아니라 추후 서버 증설 시 파일 관리에 어려움이 생깁니다. <br/>
-> Redis의 Global Cache와 비슷하게게 파일들을 한곳에서 관리하므로 위와 같은 문제들을 해결합니다. <br/>
+- 본문에 앞서 Object Storage를 왜 사용하였는지에 대해 언급하고자 합니다. 
+- 먼저 저희가 만든 오픈소스의 특성상 Client뿐만 아니라 AI Server와도 데이터를 주고 받습니다. 
+- Client에서 BE 서버로 전송한 파일들을 Object Storage에 저장하면 AI Server 및 Client 측에서 이를 사용하는 구조이므로 BE에서 받는 API Request 수를 줄이며, URL 형태로 접근 가능하다는 장점으로 인해 File 전송을 통한 레이턴시가 적어집니다.
+- 서버 내부에 파일을 저장한다면 서버 용량 증가 뿐만아니라 추후 서버 증설 시 파일 관리에 어려움이 생깁니다.
+- Redis의 Global Cache와 비슷하게게 파일들을 한곳에서 관리하므로 위와 같은 문제들을 해결합니다.
 
 <br/>
 
@@ -33,11 +32,10 @@
 <br/>
 
 ## 2. Object Storage bucket 생성
-
+> [Object Storage 화면 가이드](https://guide.ncloud-docs.com/docs/objectstorage-use-screen)
 - 콘솔 -> Services -> Object Storage -> Bucket Management - > 버킷 생성
 - 새 폴더 생성 (앞으로 사용하게 될 폴더들을 생성합니다)
 - 본 오픈소스에서는 video, json, thumbnail 이라는 폴더 3개를 생성 하였습니다.
-
 <br/>
 
 ## 3. application.yml 기입
@@ -94,14 +92,14 @@ public class S3Client {
 <br/>
 
 ## 5. API 사용법 설명
-> ### [Video Service 구현 코드](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/main/java/com/hallym/rehab/domain/video/service/VideoServiceImpl.java)
-> Path와 URL의 차이점 <br/>
-> Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다. </br>
-> URL은 사용자가 실제로 Object를 얻고자 할 때 사용되는 URL입니다. 이는 S3 SDK에서 제공하지 않지만 패턴이 일정하므로 직접 만들어 저장합니다.</br>
+>  [Video Service 구현 코드](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/main/java/com/hallym/rehab/domain/video/service/VideoServiceImpl.java)
+- Path와 URL의 차이점
+- Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다.
+- URL은 사용자가 실제로 Object를 얻고자 할 때 사용되는 URL입니다. 이는 S3 SDK에서 제공하지 않지만 패턴이 일정하므로 직접 만들어 저장합니다.
 
   <br/>
   
-  ### 5-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
+### 5-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
 ```java
 @Value("${cloud.aws.s3.bucket}")
 private String bucketName; // your bucketName
@@ -153,6 +151,7 @@ s3.putObject(bucketName, VideoObjectPath, uploadVideoFile);
 s3.putObject(bucketName, jsonObjectPath, uploadJsonFile);
 s3.putObject(bucketName, thumbnailObjectPath, uploadThumbnailFile);
 ```
+> [Object Storage 권한관리](https://guide.ncloud-docs.com/docs/storage-objectstorage-subaccount)
 6. 업로드 한 파일들은 첫 생성 시 사용자로 하여금 접근을 불가능하게 하여 권한을 설정해주어야 합니다.
 7. setACL 메소드를 구현하여 방금 생성한 파일들을 접근 가능하도록 설정합니다.
 ```java
