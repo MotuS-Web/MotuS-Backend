@@ -17,7 +17,14 @@
   * [application.yml 기입](#4-applicationyml-기입)
   * [S3Client 설정파일 만들기](#5-s3client-설정파일-만들기)
   * [API 사용법](#6-api-사용법-설명)
+    - [의존성 주입](#6-1-의존성-주입)
+    - [upload 구현](#6-2-upload-구현)
+    - [delete 구현](#6-3-delete-구현)
   * [Test 코드를 통한 S3 Client 시작하기](#7-Test-코드를-통한-S3-Client-시작하기)
+    - [의존성 주입](#7-1-의존성-주입)
+    - [버킷 목록 조회](#7-2-버킷-목록-조회)
+    - [버킷에 파일 업로드](#7-3-버킷에-파일-업로드)
+    - [버킷에서 파일 삭제](#7-4-버킷에서-파일-삭제)
  
 <br/>
 
@@ -107,7 +114,7 @@ public class S3Client {
 - Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다.
 - URL은 사용자가 실제로 Object를 얻고자 할 때 사용되는 URL입니다. 이는 S3 SDK에서 제공하지 않지만 패턴이 일정하므로 직접 만들어 저장합니다.
   
-### 6-1 서비스로직에서 사용할 의존성들을 주입받습니다.
+### 6-1 의존성 주입
 ```java
 @Value("${cloud.aws.s3.bucket}")
 private String bucketName; // your bucketName
@@ -249,7 +256,9 @@ public String deleteVideo(Long vno) {
 
 ## 7. Test 코드를 통한 S3 Client 시작하기
 > [Test Code](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/test/java/com/hallym/rehab/global/config/S3ClientTest.java)
-### 7-1. S3Client 의존성 주입 및 bucketName 세팅
+### 7-1. 의존성 주입
+1. S3Client 의존성 주입
+2. bucketName 선언언
 ```java
 @Autowired
 S3Client s3Client;
@@ -299,7 +308,7 @@ public void uploadFile() {
     }
 }
 ```
-### 7-4. 버킷 삭제
+### 7-4. 버킷에서 파일 삭제
 1. objectPath를 이용해서 bucket에서 해당 파일을 삭제합니다.
 ```java
 @Test
