@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
@@ -17,11 +18,10 @@ class S3ClientTest {
 
     @Autowired
     S3Client s3Client;
-
-    private String baseUploadURL = "https://kr.object.ncloudstorage.com/rehab/";
-
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName; // your bucketName
     @Test
-    public void 버킷목록조회() {
+    public void bucketList() {
         AmazonS3 s3 = s3Client.getAmazonS3();
 
         try {
@@ -38,17 +38,16 @@ class S3ClientTest {
     }
 
     @Test
-    public void 버킷에파일업로드() {
+    public void uploadFile() {
         AmazonS3 s3 = s3Client.getAmazonS3();
 
-        String bucketName = "rehab";
         // upload local file
-        String objectName = "video/video1";
+        String objectPath = "video/video1";
         String filePath = "src/main/resources/sample.mp4";
 
         try {
-            s3.putObject(bucketName, objectName, new File(filePath));
-            System.out.format("Object %s has been created.\n", objectName);
+            s3.putObject(bucketName, objectPath, new File(filePath));
+            System.out.format("Object %s has been created.\n", objectPath);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
         } catch(SdkClientException e) {
@@ -57,21 +56,19 @@ class S3ClientTest {
     }
 
     @Test
-    public void 파일삭제() {
+    public void deleteFile() {
         AmazonS3 s3 = s3Client.getAmazonS3();
 
-        String bucketName = "rehab";
-        String objectName = "video/video1";
+        String objectPath = "video/video1";
 
         // delete object
         try {
-            s3.deleteObject(bucketName, objectName);
-            System.out.format("Object %s has been deleted.\n", objectName);
+            s3.deleteObject(bucketName, objectPath);
+            System.out.format("Object %s has been deleted.\n", objectPath);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
         } catch(SdkClientException e) {
             e.printStackTrace();
         }
     }
-
 }
