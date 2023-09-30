@@ -8,7 +8,7 @@
 - Naver Cloud의 [Java용 AWS SDK 가이드](https://guide.ncloud-docs.com/docs/storage-storage-8-1) 를 참조하였습니다. 
 - Last Edit : 2023.09.30 
 
-# 목차 
+# 개요
   * [왜 사용하여야 하는지?](#왜-사용하여야-하는지)
   * [아키텍쳐](#아키텍쳐)
   * [1. Access-key and Secret-key 발급](#1-access-key-and-secret-key-발급)
@@ -16,18 +16,17 @@
   * [3. gradle을 통한 aws-java-sdk-s3 의존성 주입](#3-gradle을-통한-aws-java-sdk-s3-의존성-주입)
   * [4. application.yml 기입](#4-applicationyml-기입)
   * [5. S3Client 설정파일 만들기](#5-s3client-설정파일-만들기)
-  * [6. API 사용법 설명](#6-api-사용법-설명)
-
-
+  * [6. API 사용법](#6-api-사용법-설명)
+  * [7. Test 코드를 통한 S3 Client 시작하기](#7-Test-코드를-통한-S3-Client-시작하기)
  
 <br/>
 
 ## 왜 사용하여야 하는지?
-- 본문에 앞서 Object Storage를 왜 사용하였는지에 대해 언급하고자 합니다. 
-- 먼저 저희가 만든 오픈소스의 특성상 Client뿐만 아니라 AI Server와도 데이터를 주고 받습니다. 
-- Client에서 BE 서버로 전송한 파일들을 Object Storage에 저장하면 AI Server 및 Client 측에서 이를 사용하는 구조이므로 BE에서 받는 API Request 수를 줄이며, URL 형태로 접근 가능하다는 장점으로 인해 File 전송을 통한 레이턴시가 적어집니다.
-- 서버 내부에 파일을 저장한다면 서버 용량 증가 뿐만아니라 추후 서버 증설 시 파일 관리에 어려움이 생깁니다.
-- Redis의 Global Cache와 비슷하게 파일들을 한곳에서 관리하므로 위와 같은 문제들을 해결합니다.
+Object Storage를 사용한 이유는 다음과 같습니다:
+- **효율적인 데이터 관리:** 저희가 만든 오픈소스는 Client와 AI Server 모두와 데이터를 주고 받습니다. Client에서 BE 서버로 전송한 파일들을 Object Storage에 저장하면, AI Server 및 Client 측에서 이를 사용할 수 있어 BE에서 받는 API Request 수가 줄어듭니다.
+- **레이턴시 감소:** 파일들이 URL 형태로 접근 가능하므로, File 전송을 통한 레이턴시가 적어집니다.
+- **서버 용량 및 관리 효율성:** 서버 내부에 파일을 저장할 경우 서버 용량 증가 문제와 서버 증설 시 파일 관리의 어려움이 발생합니다. 이러한 문제들은 Object Storage를 통해 해결할 수 있습니다.
+- **일관된 파일 관리:** Redis의 Global Cache처럼, 모든 파일들을 한 곳에서 관리함으로써 일관된 데이터 처리가 가능합니다.
 
 <br/>
 
@@ -245,5 +244,78 @@ public String deleteVideo(Long vno) {
     videoRepository.delete(video); // --> delete from DB
 
     return "success";
+}
+```
+
+## 7. Test 코드를 통한 S3 Client 시작하기
+> [Test Code](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/test/java/com/hallym/rehab/global/config/S3ClientTest.java)
+1. s3Client 의존성 주입 및 bucketName 세팅
+```java
+@Autowired
+S3Client s3Client;
+@Value("${cloud.aws.s3.bucket}")
+private String bucketName; // your bucketName
+```
+2. 버킷 목록 조회
+- s3.listBuckets() 메소드를 이용해 bucket들을 조회합니다.
+```java
+@Test
+public void bucketList() {
+    AmazonS3 s3 = s3Client.getAmazonS3();
+
+    try {
+        List<Bucket> buckets = s3.listBuckets();
+        System.out.println("Bucket List: ");
+        for (Bucket bucket : buckets) {
+            System.out.println("    name=" + bucket.getName() + ", creation_date=" + bucket.getCreationDate() + ", owner=" + bucket.getOwner().getId());
+        }
+    } catch (AmazonS3Exception e) {
+        e.printStackTrace();
+    } catch(SdkClientException e) {
+        e.printStackTrace();
+    }
+}
+```
+3. 버킷에 파일 업로드
+- local에 있는 sample 파일을 업로드합니다.
+```java
+@Test
+public void uploadFile() {
+    AmazonS3 s3 = s3Client.getAmazonS3();
+
+    String bucketName = "your bucketName";
+    // upload local file
+    String objectName = "video/video1";
+    String filePath = "src/main/resources/sample.mp4";
+
+    try {
+        s3.putObject(bucketName, objectName, new File(filePath));
+        System.out.format("Object %s has been created.\n", objectName);
+    } catch (AmazonS3Exception e) {
+        e.printStackTrace();
+    } catch(SdkClientException e) {
+        e.printStackTrace();
+    }
+}
+```
+4. 버킷 삭제
+ - s3.deleteObject() 메소드를 이용해 bucket에서 해당 파일을 삭제합니다.
+```java
+@Test
+public void deleteFile() {
+    AmazonS3 s3 = s3Client.getAmazonS3();
+
+    String bucketName = "your bucketName";
+    String objectName = "video/video1";
+
+    // delete object
+    try {
+        s3.deleteObject(bucketName, objectName);
+        System.out.format("Object %s has been deleted.\n", objectName);
+    } catch (AmazonS3Exception e) {
+        e.printStackTrace();
+    } catch(SdkClientException e) {
+        e.printStackTrace();
+    }
 }
 ```
