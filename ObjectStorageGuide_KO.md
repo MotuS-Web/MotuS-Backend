@@ -22,20 +22,17 @@
 ## 아키텍쳐
 ![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/d218f932-a18e-41c9-a5c7-a22643d0653d)
 
-<br/>
-
-
 ## 1. Access-key and Secret-key 발급
 
 - NaverCloud에 로그인 -> 마이페이지 -> 인증키 관리 -> 신규 API 인증키 생성
-
-<br/>
 
 ## 2. Object Storage bucket 생성
 > [Object Storage 화면 가이드](https://guide.ncloud-docs.com/docs/objectstorage-use-screen)
 - 콘솔 -> Services -> Object Storage -> Bucket Management - > 버킷 생성
 - 새 폴더 생성 (앞으로 사용하게 될 폴더들을 생성합니다)
 - 본 오픈소스에서는 video, json, thumbnail 이라는 폴더 3개를 생성 하였습니다.
+
+![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/9f6ce919-f691-4488-b562-919b388f85e4)
 <br/>
 
 ## 3. application.yml 기입
@@ -56,15 +53,10 @@ cloud:
       bucket: "your bucket name"
 ```
 
-<br/>
-
 ## 4. gradle을 통한 aws-java-sdk-s3 의존성 주입
 ```gradle
 implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
 ```
-
-<br/>
-
 ## 5. S3Client 설정파일 만들기
 
 - @Configuration을 통해 설정파일을 만들어줍니다. (싱글톤으로 관리하기 위함)
@@ -96,15 +88,11 @@ public class S3Client {
 }
 ```
 
-<br/>
-
 ## 6. API 사용법 설명
 >  [Video Service 구현 코드](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/main/java/com/hallym/rehab/domain/video/service/VideoServiceImpl.java)
 - Path와 URL의 차이점
 - Path는 Object Storage에서 파일들이 실제 저장되는 경로이며, 삭제 할 경우 이를 이용하여 삭제합니다.
 - URL은 사용자가 실제로 Object를 얻고자 할 때 사용되는 URL입니다. 이는 S3 SDK에서 제공하지 않지만 패턴이 일정하므로 직접 만들어 저장합니다.
-
-  <br/>
   
 ### 6-1 서비스로직에서 사용할 의존성들을 주입받습니다. (bucketName, s3Client, repository 등)
 ```java
