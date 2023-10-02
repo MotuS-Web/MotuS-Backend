@@ -14,7 +14,7 @@
   * [Access-key and Secret-key issuance](#1-access-key-and-secret-key-issuance)
   * [Create Object Storage bucket](#2-create-object-storage-bucket)
   * [S3 sdk dependency injection through gradle](#3-s3-sdk-dependency-injection-through-gradle)
-  * [Fill in application.yml](#4-Fill-in-application.yml)
+  * [Fill in application.yml](#4-Fill-in-applicationyml)
   * [Creating S3Client configuration file](#5-creating-s3client-configuration-file)
   * [Description of API usage](#6-description-of-api-usage)
     - [Dependency Injection](#6-1-Dependency-Injection)
