@@ -9,7 +9,7 @@
 - Last Edit: 2023.09.30
 
 # outline
-  * [Why should I use it?](#Why-should-I-use-it?)
+  * [Why should I use it?](#Why-should-i-use-it?)
   * [Architecture](#Architecture)
   * [Access-key and Secret-key issuance](#1-access-key-and-secret-key-issuance)
   * [Create Object Storage bucket](#2-create-object-storage-bucket)
@@ -20,11 +20,11 @@
     - [Dependency Injection](#6-1-Dependency-Injection)
     - [upload implementation](#6-2-upload-implementation)
     - [delete implementation](#6-3-delete-implementation)
-  * [Starting S3 Client through Test Code](#7-Starting S3-Client-through-Test-Code)
+  * [Starting S3 Client through Test Code](#7-starting s3-client-through-test-code)
     - [Dependency Injection](#7-1-Dependency-Injection)
     - [Bucket list search](#7-2-bucket-list-search)
     - [Upload file to bucket](#7-3-upload-file-to-bucket)
-    - [Delete files from bucket](#7-4-Delete-files-from-bucket)
+    - [Delete files from bucket](#7-4-eelete-files-from-bucket)
 
 ## Why should I use it?
 The reasons for using Object Storage are:
