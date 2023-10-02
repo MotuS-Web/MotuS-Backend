@@ -9,22 +9,22 @@
 - Last Edit: 2023.09.30
 
 # outline
-  * [Why should I use it?](#why-should-i-use-it?)
+  * [Why should I use it?](#Why-should-i-use-it)
   * [Architecture](#Architecture)
   * [Access-key and Secret-key issuance](#1-access-key-and-secret-key-issuance)
   * [Create Object Storage bucket](#2-create-object-storage-bucket)
-  * [aws java sdk s3 dependency injection via gradle](#3-aws-java-sdk-s3-dependency-injection-via-gradle)
-  * [Enter application.yml](#4-enter-applicationyml)
-  * [Create S3Client configuration file](#5-create-s3client-configuration-file)
-  * [API usage](#6-api-usage)
+  * [s3 sdk dependency injection through gradle](#3-s3-sdk-dependency-injection-through-gradle)
+  * [Fill in application.yml](#4-Fill-in-application.yml)
+  * [Creating S3Client configuration file](#5-creating-s3client-configuration-file)
+  * [Description of API usage](#6-description-of-api-usage)
     - [Dependency Injection](#6-1-Dependency-Injection)
     - [upload implementation](#6-2-upload-implementation)
     - [delete implementation](#6-3-delete-implementation)
-  * [Starting S3 Client through Test Code](#7-starting s3-client-through-test-code)
+  * [Starting S3 Client through Test Code](#7-starting-s3-client-through-test-code)
     - [Dependency Injection](#7-1-Dependency-Injection)
     - [Bucket list search](#7-2-bucket-list-search)
-    - [Upload file to bucket](#7-3-upload-file-to-bucket)
-    - [Delete files from bucket](#7-4-eelete-files-from-bucket)
+    - [Upload files to bucket](#7-3-upload-files-to-bucket)
+    - [Delete files from bucket](#7-4-delete-files-from-bucket)
 
 ## Why should I use it?
 The reasons for using Object Storage are:
@@ -51,7 +51,7 @@ The reasons for using Object Storage are:
 ![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/9f6ce919-f691-4488-b562-919b388f85e4)
 <br/>
 
-## 3. aws java sdk s3 dependency injection through gradle
+## 3. s3 sdk dependency injection through gradle
 ```gradle
 implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
 ```
