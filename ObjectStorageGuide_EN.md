@@ -9,7 +9,7 @@
 - Last Edit: 2023.09.30
 
 # outline
-  * [Why should I use it?](#Why-should-i-use-it?)
+  * [Why should I use it?](#why-should-i-use-it?)
   * [Architecture](#Architecture)
   * [Access-key and Secret-key issuance](#1-access-key-and-secret-key-issuance)
   * [Create Object Storage bucket](#2-create-object-storage-bucket)
