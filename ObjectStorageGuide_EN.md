@@ -4,9 +4,9 @@
 
 - This document describes how to use the Object Storage API served by Naver Cloud.
 - Areas of use include uploading video files, json files, and thumbnail files.
-- No need to use Naver Cloud and is compatible with AWS's S3.
+- No need to use Naver Cloud and is compatible with AWS S3.
 - Refer to Naver Cloud’s [AWS SDK Guide for Java](https://guide.ncloud-docs.com/docs/storage-storage-8-1).
-- Last Edit: 2023.09.30
+- Last Edit: 2023.10.02
 
 # outline
   * [Why should I use it?](#Why-should-i-use-it)
@@ -27,7 +27,7 @@
     - [Delete files from bucket](#7-4-delete-files-from-bucket)
 
 ## Why should I use it?
-The reasons for using Object Storage are:
+The reasons for using Object Storage
 - **Efficient data management:** The open source we created exchanges data with both the client and the AI ​​server. If the files sent from the client to the BE server are stored in Object Storage, they can be used by the AI ​​Server and the client, reducing the number of API requests received from BE.
 - **Reduced Latency:** Since files can be accessed in URL format, latency through file transfer is reduced.
 - **Server capacity and management efficiency:** When files are stored inside the server, server capacity increases and file management becomes difficult when the server is expanded. These problems can be solved through Object Storage.
@@ -46,7 +46,7 @@ The reasons for using Object Storage are:
 > [Object Storage Screen Guide](https://guide.ncloud-docs.com/docs/objectstorage-use-screen)
 - Console -> Services -> Object Storage -> Bucket Management -> Create Bucket
 - Create a new folder (create folders that will be used in the future)
-- In this open source, three folders called video, json, and thumbnail were created.
+- in our case, create three folders called video, json, and thumbnail
 
 ![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/9f6ce919-f691-4488-b562-919b388f85e4)
 <br/>
@@ -165,8 +165,8 @@ s3.putObject(bucketName, jsonObjectPath, uploadJsonFile);
 s3.putObject(bucketName, thumbnailObjectPath, uploadThumbnailFile);
 ```
 > [Object Storage Permission Management](https://guide.ncloud-docs.com/docs/storage-objectstorage-subaccount)
-6. When first creating uploaded files, permissions must be set to disable user access.
-7. Implement the setACL method to make the files just created accessible.
+6. When first creating files, The user's read access will be disabled.
+7. Implement the setACL method to make the files accessible to AllUsers.
 ```java
 // All Users can access Object
 setAcl(s3, VideoObjectPath);
@@ -200,7 +200,7 @@ public String createVideo(VideoRequestDTO videoRequestDTO) {
 
 ### 6-3 delete implementation
 1. Receive the PK of the video.
-2. Obtain the Video object using PK and retrieve the path of the files.
+2. Obtain the Video object using PK and get the path of the files.
 ```java
 @Override
 public String deleteVideo(Long vno) {
