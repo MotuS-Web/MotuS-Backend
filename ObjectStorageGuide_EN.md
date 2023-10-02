@@ -13,8 +13,8 @@
   * [Architecture](#Architecture)
   * [Access-key and Secret-key issuance](#1-access-key-and-secret-key-issuance)
   * [Create Object Storage bucket](#2-create-object-storage-bucket)
-  * [s3 sdk dependency injection through gradle](#3-s3-sdk-dependency-injection-through-gradle)
-  * [Fill in application.yml](#4-Fill-in-application.yml)
+  * [S3 sdk dependency injection through gradle](#3-s3-sdk-dependency-injection-through-gradle)
+  * [Fill in application.yml](#4-Fill-in-application-yml)
   * [Creating S3Client configuration file](#5-creating-s3client-configuration-file)
   * [Description of API usage](#6-description-of-api-usage)
     - [Dependency Injection](#6-1-Dependency-Injection)
@@ -51,7 +51,7 @@ The reasons for using Object Storage are:
 ![image](https://github.com/MotuS-Web/MotuS-Backend/assets/52206904/9f6ce919-f691-4488-b562-919b388f85e4)
 <br/>
 
-## 3. s3 sdk dependency injection through gradle
+## 3. S3 sdk dependency injection through gradle
 ```gradle
 implementation 'com.amazonaws:aws-java-sdk-s3:1.11.238'
 ```
