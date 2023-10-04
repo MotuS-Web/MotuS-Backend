@@ -258,7 +258,7 @@ public String deleteVideo(Long vno) {
 > [Test Code](https://github.com/MotuS-Web/MotuS-Backend/blob/main/src/test/java/com/hallym/rehab/global/config/S3ClientTest.java)
 ### 7-1. 의존성 주입
 1. S3Client 의존성 주입
-2. bucketName 선언언
+2. bucketName 선언
 ```java
 @Autowired
 S3Client s3Client;
