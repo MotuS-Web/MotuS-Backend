@@ -2,6 +2,7 @@ package com.hallym.rehab.domain.video.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.hallym.rehab.domain.video.dto.UploadFileDTO;
+import com.hallym.rehab.domain.video.dto.VideoDetailResponseDTO;
 import com.hallym.rehab.domain.video.dto.VideoRequestDTO;
 import com.hallym.rehab.domain.video.dto.VideoResponseDTO;
 import com.hallym.rehab.domain.video.dto.pagedto.VideoPageRequestDTO;
@@ -12,6 +13,7 @@ import java.io.File;
 
 public interface VideoService {
     VideoPageResponseDTO<VideoResponseDTO> getVideoList(VideoPageRequestDTO requestDTO);
+    VideoDetailResponseDTO getVideo(Long vno);
     String createVideo(VideoRequestDTO videoRequestDTO);
     String deleteVideo(Long vno);
     File convertMultipartFileToFile(MultipartFile multipartFile, String fileName);

@@ -1,9 +1,11 @@
 package com.hallym.rehab.domain.video.service;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.hallym.rehab.domain.video.dto.UploadFileDTO;
+import com.hallym.rehab.domain.video.dto.VideoDetailResponseDTO;
 import com.hallym.rehab.domain.video.dto.VideoRequestDTO;
 import com.hallym.rehab.domain.video.dto.VideoResponseDTO;
 import com.hallym.rehab.domain.video.dto.pagedto.VideoPageRequestDTO;
@@ -29,7 +31,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,6 +61,19 @@ public class VideoServiceImpl implements VideoService{
     }
 
     /**
+     * Single video view
+     * @param vno
+     * @return VideoDetailResponseDTO
+     */
+    @Override
+    public VideoDetailResponseDTO getVideo(Long vno) {
+        Video video = videoRepository.findById(vno)
+                .orElseThrow(() -> new NotFoundException("video not found for id -> " + vno));
+
+        return video.toDetailDTO();
+    }
+
+    /**
      * create Video using RequestDTO
      * @param videoRequestDTO
      */
@@ -85,10 +99,9 @@ public class VideoServiceImpl implements VideoService{
      */
     @Override
     public String deleteVideo(Long vno) {
-        Optional<Video> byId = videoRepository.findById(vno);
-        if (byId.isEmpty()) return "Video not found for Id : " + vno;
+        Video video = videoRepository.findById(vno)
+                .orElseThrow(() -> new NotFoundException("video not found for id -> " + vno));
 
-        Video video = byId.get();
         String videoPath = video.getVideoPath();
         String jsonPath = video.getJsonPath();
         String thumbnailPath = video.getThumbnailPath();
