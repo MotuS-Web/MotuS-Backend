@@ -1,5 +1,6 @@
 package com.hallym.rehab.domain.video.entity;
 
+import com.hallym.rehab.domain.video.dto.VideoDetailResponseDTO;
 import com.hallym.rehab.global.baseEntity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,4 +45,13 @@ public class Video extends BaseTimeEntity {
     private String jsonPath; // (Used when deleting)
 
     private String thumbnailPath; // (Used when deleting)
+
+    public VideoDetailResponseDTO toDetailDTO() {
+        return VideoDetailResponseDTO.builder()
+                    .vno(vno)
+                    .title(title)
+                    .description(description)
+                    .videoURL(videoURL)
+                    .build();
+    }
 }
