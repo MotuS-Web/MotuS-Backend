@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
-
-    @GetMapping("/ci-cd")
-    public String cicdTest(){
+    @GetMapping("/result")
+    public String getTest(){
         return "CI / CD Test Success";
     }
 }
