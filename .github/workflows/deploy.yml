@@ -8,7 +8,7 @@ env:
   PROJECT_NAME: motus_project
   BUCKET_NAME: motus-buket
   AWS_REGION: ap-northeast-2
-  CODE_DEPLOY_APP_NAME: motus-buket
+  CODE_DEPLOY_APP_NAME: motus-CICD
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
   GITHUB_SHA : 5964051b67eabac38ed40de67594b8b7d3e0d168.zip
 
