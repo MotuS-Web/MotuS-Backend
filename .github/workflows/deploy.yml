@@ -10,6 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APP_NAME: motus-buket
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
+  GITHUB_SHA : 5964051b67eabac38ed40de67594b8b7d3e0d168.zip
 
 permissions: # 워크플로의 권한을 설정
   contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
@@ -56,12 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Make Zip File
-        run: |
-          ls -al
-          pwd    
-          ls
-          zip -qq -r ./5964051b67eabac38ed40de67594b8b7d3e0d168.zip . -i .
-          ls
+        run: zip -qq -r "${{ env.GITHUB_SHA }}" .
         shell: bash
 
       - name: Configure AWS credentials
@@ -72,7 +68,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload Zip File to S3
-        run: aws s3 cp --region ${{ env.AWS_REGION }} ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ${{ env.AWS_REGION }} ./${{ env.GITHUB_SHA }} s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy to EC2
-        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA
