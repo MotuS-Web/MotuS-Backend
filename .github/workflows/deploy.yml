@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Make Zip File
-        run: zip -qq -r "${{ env.GITHUB_SHA }}" .
+        run: zip -qq -r ${{ env.GITHUB_SHA }} . -i .
         shell: bash
 
       - name: Configure AWS credentials
