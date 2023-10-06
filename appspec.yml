@@ -4,15 +4,16 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/motus
+    overwrite: yes
 # codeDeploy error 발생 시, 설정 파일이 잘못되었을 가능성이 큼
 
 permissions:
-  - object: /home/ubuntu/motus/
+  - object: /home/ubuntu/
     owner: ubuntu
     group: ubuntu
 
 hooks:
   AfterInstall:
-    - location: script/deploy.sh
+    - location: /script/deploy.sh
       timeout: 60
       runas: ubuntu
