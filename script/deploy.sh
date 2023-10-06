@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/motus
+REPOSITORY=/home/ubuntu/motus
 # shellcheck disable=SC2164
 cd $REPOSITORY
 
