@@ -59,7 +59,9 @@ jobs:
         run: |
           ls -al
           pwd    
-          zip -qq -r ./$GITHUB_SHA.zip .
+          ls
+          zip -qq -r ./5964051b67eabac38ed40de67594b8b7d3e0d168.zip . -i .
+          ls
         shell: bash
 
       - name: Configure AWS credentials
