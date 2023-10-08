@@ -1,36 +1,137 @@
-# ReHab-Backend
+# Motus-Backend
+
+<div align="center">
+  <img src="https://github.com/MotuS-Web/MotuS-Backend/assets/80760160/93089974-9c15-4428-926d-0c940464c39d" alt="motus_logo" width="300" height="300">
+</div>
 
 
-### 1.  usage skills
-#### 1.1. Environment
+## Descriptions
+
+Backend uses JAVA to build an API server that communicates with the client as a Spring-Boot framework.
+
+The main purpose of the API server is to store and manage the output received by the client through the AI-Server and the uploaded Guide Data (mp4 & Json) in the DB server to receive the program that the user wants.
+
+This model will be able to function in all areas that collect and utilize human motor movements
+
+## A Table of Contents
+* [1. Installation](#1-installation)
+  * [1.1 Git Clone](#11-git-clone)
+  * [1.2 Configuration](#12-configuration)
+    * [application.yml](#applicationyml)
+  * [1.3 Build](#13-build)
+* [2. Usage](#2-usage)
+  * [2.1. Environment](#21-environment)
+  * [2.2. Development](#22-development)
+* [3. How to test the software](#3-how-to-test-the-software)
+* [4. System Architecture](#4-system-architecture)
+* [5. Getting help](#5-getting-help)
+* [6. Documentation](#6-documentation)
+  * [6.1 NCP Object Storage ](#61-ncp-object-storage-)
+  * [6.2 Documentation2](#62-documentation-2)
+* [Open source licensing info](#open-source-licensing-info)
+* [References](#references)
+
+## 1. Installation
+
+### 1.1 Git Clone
+`$ git clone https://github.com/MotuS-Web/MotuS-Backend.git`
+
+### 1.2 Configuration
+It needs to be modified to meet server specifications.
+
+#### application.yml
+
+```yml
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://{host}:{port}/{dbname}
+    username: {username}
+    password: {password}
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization : true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  logging:
+    config: classpath:log4j2.yml
+  level:
+    org.hibernate.SQL: debug
+
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 40MB
+
+cloud:
+  aws:
+    credentials:
+      access-key: {AWS_ACCESS_KEY_ID}
+      secret-key: {AWS_SECRET_ACCESS_KEY}
+    region:
+      static: {your-region}
+    s3:
+      endpoint: https://kr.object.ncloudstorage.com
+      bucket: {your-bucket}
+
+server:
+  ssl:
+    key-store: key-store-path
+    key-store-type: PKCS12
+    key-store-password: 1111
+
+
+```
+### 1.3 Build
+```shell
+$ ./gradlew clean build -x test
+$ cd build/libs
+$ java -jar *.jar
+```
+
+## 2. Usage
+#### 2.1. Environment
 - InteliJ
 - Postman
 - Git Action
 - Git
 - Gradle
-- Raspberry FI 4B
 
-#### 1.2 Development
+#### 2.2. Development
 - Spring-Boot
 - Java
 - NCP(Naver Cloud Platform)
 - MariaDB
-  
-#### 1.3 Dependencies
-- QueryDsl
-- Spring-Data-JPA
-- Lombok
+- .... writing...ETC
+
+## 3. How to test the software
+If the software includes automated tests, detail how to run those tests.
+
+## 4. System Architecture
+
+
+## 5. Getting help
+#### Example
+If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker.
+
+## 6. Documentation
+### 6.1 NCP Object Storage 
+-  [ObjectStorageGuide_EN.md](ObjectStorageGuide_EN.md)
+-  [ObjectStorageGuide_KO.md](ObjectStorageGuide_KO.md)
+### 6.2 Documentation 2
+
 
 ---
-### 2. Descriptions
+## Open source licensing info
+1. [License](http://www.opensource.org/licenses/mit-license)
+2. 
 
-본 대회에서 Backend 개발 언어는 JAVA를 사용하며, Spring-Boot 프레임워크로 Client와 통신하는 API 서버를 구축한다. 
-
-API 서버의 주 목적은 Client가 AI-Server를 통해 전달 받은 output과 업로드한 Guide Data(mp4 & Json)를 DB 서버에 저장하고, 관리하여 사용자가 원하는 프로그램을 제공 받는 데에 있다.
-
-주요 기능 정보는 아래와 같다. 
-- Client와 FastAPI가 통신한 결과(Skeleton point와 metrics)를 전달 받아 핸들링할 수 있으며, Database(MariaDB) 및 NCP Object Storage와 통신 할 수 있다.
-- JPA를 이용하여 서버 내에서 데이터들을 영속성 컨텍스트에 관리하고, DataBase에 저장되어 있는 테이블과 엔티티 객체를 매핑하여 사용할 수 있다. 
-- QueryDsl를 이용한 동적쿼리 방식으로 Client에게 필요한 데이터를 전달할 수 있다.
-
-
+## References
+1. asdf
+2. asdf
