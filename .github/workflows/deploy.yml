@@ -10,7 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APP_NAME: motus_CICD
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
-  GITHUB_SHA: 8b49819811ccdd9aa265d4a29ac87298d2a046ba
+#  GITHUB_SHA: 8b49819811ccdd9aa265d4a29ac87298d2a046ba
 
 permissions: # 워크플로의 권한을 설정
   contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
@@ -57,7 +57,7 @@ jobs:
         run: |
           ls
           cd ./build
-          zip -qq -r $GITHUB_SHA.zip . -i ./build/*
+          zip -qq -r $GITHUB_SHA.zip . 
           pwd
         shell: bash
 
@@ -75,7 +75,7 @@ jobs:
           cd ./build
           pwd
           ls
-          aws s3 cp --region ${{ env.AWS_REGION }} ./${{ env.GITHUB_SHA.zip }} s3://${{ env.BUCKET_NAME }}/${{ env.PROJECT_NAME }}/${{ env.GITHUB_SHA }}.zip
+          aws s3 cp --region $AWS_REGION ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy to EC2
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
