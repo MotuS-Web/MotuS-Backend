@@ -62,6 +62,7 @@ jobs:
     steps:
       - name: Make Zip File
         run: |
+          cd /home/runner/work/MotuS-Backend/MotuS-Backend
           zip -qq -r $GITHUB_SHA.zip . -i ./build/*
           cd /build
           ls
