@@ -35,11 +35,7 @@ jobs:
 
       # gradle build
       - name: Build with Gradle
-        run:  | 
-            ./gradlew build -x test
-            ls
-            pwd
-
+        run: ./gradlew build -x test
       - name: 테스트 결과를 PR에 코멘트로 등록합니다
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
@@ -54,11 +50,7 @@ jobs:
           token: ${{ github.token }}
 
       - name: Make Zip File
-        run: |
-          ls
-          cd ./build
-          zip -qq -r $GITHUB_SHA.zip . 
-          pwd
+        run: zip -qq -r $GITHUB_SHA.zip .
         shell: bash
 
       - name: Configure AWS credentials
@@ -69,13 +61,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload Zip File to S3
-        run: |
-          ls
-          pwd
-          cd ./build
-          pwd
-          ls
-          aws s3 cp --region $AWS_REGION ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region $AWS_REGION ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy to EC2
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
