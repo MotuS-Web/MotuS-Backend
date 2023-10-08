@@ -55,12 +55,6 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
 
-
-  deploy:
-    needs: build # 빌드 작업이 성공적으로 완료되어야만 배포 작업을 실행
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3 #현재 코드 레포지토리를 체크아웃
       - name: Make Zip File
         run: |
           ls
