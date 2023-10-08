@@ -18,8 +18,7 @@ permissions: # 워크플로의 권한을 설정
 
 
 jobs:
-
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -40,7 +39,6 @@ jobs:
             ./gradlew build -x test
             ls
             pwd
-            cd ./build  
 
       - name: 테스트 결과를 PR에 코멘트로 등록합니다
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -58,9 +56,9 @@ jobs:
       - name: Make Zip File
         run: |
           ls
+          cd ./build
           zip -qq -r $GITHUB_SHA.zip . -i ./build/*
-          cd /build
-          ls
+          pwd
         shell: bash
 
       - name: Configure AWS credentials
