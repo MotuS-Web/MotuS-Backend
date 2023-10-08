@@ -34,37 +34,43 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Decrypt application-secret yml    # 암호화 했던 설정파일 복호화
+      # 암호화 했던 설정파일 복호화
+      - name: Decrypt application-secret yml
         run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase=${{ secrets.APPLICATION_SECRET_YML }} --output $RESOURCE_PATH/application.tar $RESOURCE_PATH/application.tar.gpg
         shell: bash
 
-      - name: Unzip application-secret yml    #  압축 해제
+      # 설정파일 압축 해제
+      - name: Unzip application-secret yml
         run: |
-          cd $RESOURCE_PATH
+          cd $RESOURCE_PATH 
           tar xvf application.tar
         shell: bash
 
       # gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
-      - name: 테스트 결과를 PR에 코멘트로 등록합니다
+
+      # 테스트 결과를 PR에 comment로 기록
+      - name: Write test results in comments to Pull Request
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 
-      - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
+      # 테스트 실패 시, 실패한 코드 라인에 Check comment 기록
+      - name: If a test fails, write a check comment to the failed code line
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
 
-
+      # 소스코드 압축
       - name: Make Zip File
         run: zip -qq -r $GITHUB_SHA.zip .
         shell: bash
 
+      # AWS 자격 증명
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -72,8 +78,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      # AWS S3에 압축파일 UPLOAD
       - name: Upload Zip File to S3
         run: aws s3 cp --region $AWS_REGION ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
+      # S3에 업로드한 소스코드를 EC2로 배포
       - name: Code Deploy to EC2
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
