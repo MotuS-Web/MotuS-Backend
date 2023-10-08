@@ -10,7 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APP_NAME: motus_CICD
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
-#  GITHUB_SHA: 8b49819811ccdd9aa265d4a29ac87298d2a046ba
+  RESOURCE_PATH: /home/runner/work/$PROJECT_NAME/$PROJECT_NAME/src/main/resources
 
 permissions: # 워크플로의 권한을 설정
   contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
@@ -22,6 +22,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Decrypt application-secret yml    # 암호화 했던 설정파일 복호화
+        run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase=${{ secrets.APPLICATION_SECRET_YML }} --output $RESOURCE_PATH/application.tar $RESOURCE_PATH/application.tar.gpg
+        shell: bash
+
+      - name: Unzip application-secret yml    #  압축 해제
+        run: tar xvf $RESOURCE_PATH/application.tar
+        shell: bash
+
+
       # JDK 11 install
       - name: Set up JDK 11
         uses: actions/setup-java@v3
