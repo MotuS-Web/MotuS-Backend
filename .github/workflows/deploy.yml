@@ -69,9 +69,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload Zip File to S3
-        run: | 
+        run: |
           ls
           pwd
+          cd ./build
+          pwd
+          ls
           aws s3 cp --region ${{ env.AWS_REGION }} ./${{ env.GITHUB_SHA.zip }} s3://${{ env.BUCKET_NAME }}/${{ env.PROJECT_NAME }}/${{ env.GITHUB_SHA }}.zip
 
       - name: Code Deploy to EC2
