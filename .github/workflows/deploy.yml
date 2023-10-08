@@ -36,7 +36,11 @@ jobs:
 
       # gradle build
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run:  | 
+            ./gradlew build -x test
+            ls
+            pwd
+            cd ./build
 
       - name: 테스트 결과를 PR에 코멘트로 등록합니다
         uses: EnricoMi/publish-unit-test-result-action@v1
