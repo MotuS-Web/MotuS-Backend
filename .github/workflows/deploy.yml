@@ -23,15 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Decrypt application-secret yml    # 암호화 했던 설정파일 복호화
-        run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase=${{ secrets.APPLICATION_SECRET_YML }} --output $RESOURCE_PATH/application.tar $RESOURCE_PATH/application.tar.gpg
-        shell: bash
-
-      - name: Unzip application-secret yml    #  압축 해제
-        run: tar xvf $RESOURCE_PATH/application.tar
-        shell: bash
-
-
       # JDK 11 install
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -42,6 +33,18 @@ jobs:
       # Gradle Wrapper 스크립트를 실행하기 위한 permission 획득
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
+
+      - name: Decrypt application-secret yml    # 암호화 했던 설정파일 복호화
+        run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase=${{ secrets.APPLICATION_SECRET_YML }} --output $RESOURCE_PATH/application.tar $RESOURCE_PATH/application.tar.gpg
+        shell: bash
+
+      - name: Unzip application-secret yml    #  압축 해제
+        run: |
+          cd $RESOURCE_PATH
+          ls
+          tar xvf application.tar
+          ls
+        shell: bash
 
       # gradle build
       - name: Build with Gradle
@@ -58,6 +61,7 @@ jobs:
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
+
 
       - name: Make Zip File
         run: zip -qq -r $GITHUB_SHA.zip .
