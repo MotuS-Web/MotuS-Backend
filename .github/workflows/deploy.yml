@@ -10,7 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APP_NAME: motus_CICD
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
-  RESOURCE_PATH: /home/runner/work/$PROJECT_NAME/$PROJECT_NAME/src/main/resources
+  RESOURCE_PATH: /home/runner/work/MotuS-Backend/MotuS-Backend/src/main/resources
 
 permissions: # 워크플로의 권한을 설정
   contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
