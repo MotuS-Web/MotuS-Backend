@@ -40,7 +40,7 @@ jobs:
             ./gradlew build -x test
             ls
             pwd
-            cd ./build
+            cd ./build  
 
       - name: 테스트 결과를 PR에 코멘트로 등록합니다
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Make Zip File
-        run: zip -qq -r $GITHUB_SHA.zip . -i build/*
+        run: zip -qq -r $GITHUB_SHA.zip ./build/*
         shell: bash
 
       - name: Configure AWS credentials
