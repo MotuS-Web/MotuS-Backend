@@ -10,6 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APP_NAME: motus_CICD
   DEPLOYMENT_GROUP_NAME: motus_CICD_group
+  GITHUB_SHA: motus_sources
 
 permissions: # 워크플로의 권한을 설정
   contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
