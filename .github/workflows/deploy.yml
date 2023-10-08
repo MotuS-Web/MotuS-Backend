@@ -41,9 +41,7 @@ jobs:
       - name: Unzip application-secret yml    #  압축 해제
         run: |
           cd $RESOURCE_PATH
-          ls
           tar xvf application.tar
-          ls
         shell: bash
 
       # gradle build
