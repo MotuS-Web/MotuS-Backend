@@ -56,9 +56,9 @@ jobs:
     needs: build # 빌드 작업이 성공적으로 완료되어야만 배포 작업을 실행
     runs-on: ubuntu-latest
     steps:
-      - name: Make Zip File
-        run: zip -qq -r ${{ env.GITHUB_SHA }} . -i .
-        shell: bash
+#      - name: Make Zip File
+#        run: zip -qq -r ${{ env.GITHUB_SHA }} . -i .
+#        shell: bash
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -68,7 +68,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload Zip File to S3
-        run: aws s3 cp --region ${{ env.AWS_REGION }} ./${{ env.GITHUB_SHA }} s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA
+        run: aws s3 cp --region ${{ env.AWS_REGION }} ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy to EC2
-        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA
+        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
