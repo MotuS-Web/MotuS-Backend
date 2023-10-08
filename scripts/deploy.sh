@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+chmod +x /home/ubuntu/motus/scripts/deploy.sh
 
 REPOSITORY=/home/ubuntu/motus
 # shellcheck disable=SC2164
