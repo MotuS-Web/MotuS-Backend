@@ -69,7 +69,10 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload Zip File to S3
-        run: aws s3 cp --region ${{ env.AWS_REGION }} ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: | 
+          ls
+          pwd
+          aws s3 cp --region ${{ env.AWS_REGION }} ./${{ env.GITHUB_SHA.zip }} s3://${{ env.BUCKET_NAME }}/${{ PROJECT_NAME }}/${{ GITHUB_SHA }}.zip
 
       - name: Code Deploy to EC2
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
