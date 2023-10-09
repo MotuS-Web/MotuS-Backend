@@ -1,0 +1,87 @@
+name: Build and Deploy Server to AWS EC2
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  PROJECT_NAME: motus_project
+  BUCKET_NAME: motus-buket
+  AWS_REGION: ap-northeast-2
+  CODE_DEPLOY_APP_NAME: motus_CICD
+  DEPLOYMENT_GROUP_NAME: motus_CICD_group
+  RESOURCE_PATH: /home/runner/work/MotuS-Backend/MotuS-Backend/src/main/resources
+
+permissions: # 워크플로의 권한을 설정
+  contents: read # 코드 리포지토리의 내용을 읽기 권한을 부여
+  checks: write # 워크플로 결과를 체크하기 위한 쓰기 권한을 부여
+
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # JDK 11 install
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      # Gradle Wrapper 스크립트를 실행하기 위한 permission 획득
+      - name: Run chmod to make gradlew executable
+        run: chmod +x ./gradlew
+
+      # 암호화 했던 설정파일 복호화
+      - name: Decrypt application-secret yml
+        run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase=${{ secrets.APPLICATION_SECRET_YML }} --output $RESOURCE_PATH/application.tar $RESOURCE_PATH/application.tar.gpg
+        shell: bash
+
+      # 설정파일 압축 해제
+      - name: Unzip application-secret yml
+        run: |
+          cd $RESOURCE_PATH 
+          tar xvf application.tar
+        shell: bash
+
+      # gradle build
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      # 테스트 결과를 PR에 comment로 기록
+      - name: Write test results in comments to Pull Request
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
+
+      # 테스트 실패 시, 실패한 코드 라인에 Check comment 기록
+      - name: If a test fails, write a check comment to the failed code line
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          token: ${{ github.token }}
+
+      # 소스코드 압축
+      - name: Make Zip File
+        run: zip -qq -r $GITHUB_SHA.zip .
+        shell: bash
+
+      # AWS 자격 증명
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # AWS S3에 압축파일 UPLOAD
+      - name: Upload Zip File to S3
+        run: aws s3 cp --region $AWS_REGION ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+
+      # S3에 업로드한 소스코드를 EC2로 배포
+      - name: Code Deploy to EC2
+        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
