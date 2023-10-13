@@ -15,6 +15,7 @@ RUN chown dockeruser:dockeruser motus-0.0.1-SNAPSHOT.jar
 #사용자 계정으로 전환
 USER dockeruser
 
+#노출할 포트 명시
 EXPOSE 8081
 
 # 시스템 진입점 정의
