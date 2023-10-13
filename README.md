@@ -129,8 +129,21 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 
 ---
 ## Open source licensing info
-1. [License](http://www.opensource.org/licenses/mit-license)
-2. 
+### Apache License 2.0
+- org.springframework.boot:spring-boot-starter-data-jpa
+- org.springframework.boot:spring-boot-starter-web
+- org.springframework.boot:spring-boot-devtools
+- org.springframework.boot:spring-boot-configuration-processor
+- org.springframework.boot:spring-boot-starter-test
+- org.springframework.boot:spring-boot-starter-validation
+- com.querydsl:querydsl-jpa
+- com.amazonaws:aws-java-sdk-s3:1.11.238
+### MIT License
+- org.projectlombok:lombok
+### FreeBSD
+- org.jcodec:jcodec:0.2.5
+### LGPL 2.1
+- org.mariadb.jdbc:mariadb-java-client
 
 ## References
 1. asdf
