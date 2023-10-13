@@ -1,9 +1,8 @@
 # Motus-Backend
 
 <div align="center">
-  <img src="https://github.com/MotuS-Web/MotuS-Backend/assets/80760160/93089974-9c15-4428-926d-0c940464c39d" alt="motus_logo" width="300" height="300">
+  <img src="https://github.com/MotuS-Web/MotuS-Backend/assets/80760160/dea1f252-ec63-410f-8516-fc4adcfd1393" alt="motus_logo" width="300" height="300">
 </div>
-
 
 ## Descriptions
 
