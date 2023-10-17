@@ -12,6 +12,9 @@ RUN addgroup --system dockeruser && adduser --system --ingroup dockeruser docker
 # 사용자 계정으로 소유권 변경
 RUN chown dockeruser:dockeruser motus-0.0.1-SNAPSHOT.jar
 
+# AWS CLI 설치
+RUN apt-get update && apt-get install -y awscli
+
 #사용자 계정으로 전환
 USER dockeruser
 
