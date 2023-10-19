@@ -1,6 +1,6 @@
 ---
 name: "✅ FEATURE"
-about: Feature 작업 사항을 입력해주세요.
+about:  Please provide details of the feature task.
 title: ''
 labels: ''
 assignees: ''
@@ -8,13 +8,13 @@ assignees: ''
 ---
 
 ### Description
-> 설명을 작성해주세요.
+> Please provide a description.
 
 ### In Progress
-> 작업사항들을 작성해주세요.
+> List the tasks in progress.
 - [ ] todo1
 - [ ] todo2
 - [ ] todo3
 
 ### ETC
-> 기타사항
+> Other notes

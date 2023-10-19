@@ -1,10 +1,10 @@
 ## ☑️ Describe your changes
-- 작업 내용을 적어주세요 
-> ex. - CORS 허용 범위를 (/**) URL 전체로 변경한다.
+- Write a brief description of your changes.
+> e.g., - Allow CORS for all URLs (/**).
 
 ## 📷 Screenshot
-- 관련 스크린샷
+- Relevant screenshot(s)
 
 ## 🔗 Issue number and link
-- 이슈 번호를 등록해주세요
-> closed {#이슈번호}
+- Register the issue number.
+> closed {#issue number}
