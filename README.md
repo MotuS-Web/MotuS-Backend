@@ -161,10 +161,12 @@ $ docker run -p 8080:8081 -d --name=app-name tag-name:1.0
 
 ## 3. System Architecture
 ### 3.1. Consumer Function Architecture
-![image](https://github.com/Sirius506775/MotuS-Backend/assets/80760160/755656d9-76c9-4d24-b437-b2a76b19524d)
+
+![image02](https://github.com/Sirius506775/MotuS-Backend/assets/80760160/6f241721-f961-4e65-a49e-20dc07be839b)
 
 ### 3.2. Admin Function Architecture
-![image](https://github.com/Sirius506775/MotuS-Backend/assets/80760160/b589ad3d-1501-44c8-91b7-3ea9957aff7d)
+
+![image03](https://github.com/Sirius506775/MotuS-Backend/assets/80760160/165b4b59-43d6-4394-b999-0c1739828a70)
 
 ## 4. Documentation
 ### 4.1. NCP Object Storage 
