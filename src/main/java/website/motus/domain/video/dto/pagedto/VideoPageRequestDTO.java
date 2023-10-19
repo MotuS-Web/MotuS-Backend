@@ -20,7 +20,7 @@ public class VideoPageRequestDTO {
     private int page = 1;
 
     @Builder.Default
-    private int size = 10;
+    private int size = 6;
 
     // Below are the search conditions.
 
