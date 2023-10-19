@@ -20,8 +20,12 @@ assignees: ''
 ### Expected behavior
 > 본래 작동할 것이라 예상했던 구현 결과에 대해 설명하세요. 
 
+### Troubleshooting
+> 버그 해결 과정을 설명하세요.
+
+
 ### Screenshots
 > 화면 첨부파일
 
 ### Additional context(Optional)
->발생한 문제에 대한 추가사항
+> 발생한 문제에 대한 추가사항

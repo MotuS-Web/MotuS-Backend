@@ -119,8 +119,9 @@ public class VideoServiceImpl implements VideoService{
      * @return File Object
      */
     @Override
-    public File convertMultipartFileToFile(MultipartFile multipartFile, String fileName) {
-        File convertedFile = new File(fileName);
+    public File convertMultipartFileToFile(MultipartFile multipartFile, String fileName) throws IOException {
+//        File convertedFile = new File(fileName);
+        File convertedFile = File.createTempFile("temp", fileName);
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(multipartFile.getBytes());
         } catch (IOException e) {

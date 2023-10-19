@@ -9,11 +9,8 @@ COPY build/libs/motus-0.0.1-SNAPSHOT.jar motus-0.0.1-SNAPSHOT.jar
 # 앱 실행을 위한 사용자 계정 생성
 RUN addgroup --system dockeruser && adduser --system --ingroup dockeruser dockeruser
 
-# 사용자 계정으로 소유권 변경
-RUN chown dockeruser:dockeruser motus-0.0.1-SNAPSHOT.jar
-
-# AWS CLI 설치
-RUN apt-get update && apt-get install -y awscli
+# /app 폴더 소유권을 신규 사용자 계정으로 변경
+RUN chown -R dockeruser:dockeruser /app
 
 #사용자 계정으로 전환
 USER dockeruser

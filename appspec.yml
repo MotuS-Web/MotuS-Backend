@@ -4,6 +4,8 @@ files:
   - source: /
     destination: /home/ubuntu/motus
     overwrite: true
+    file_exists_behavior: OVERWRITE #파일 존재 시, OVERWRITE
+
 permissions:
   - object: /home/ubuntu/motus/
     owner: ubuntu

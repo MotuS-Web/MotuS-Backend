@@ -10,13 +10,14 @@ import website.motus.domain.video.dto.pagedto.VideoPageResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 public interface VideoService {
     VideoPageResponseDTO<VideoResponseDTO> getVideoList(VideoPageRequestDTO requestDTO);
     VideoDetailResponseDTO getVideo(Long vno);
     String createVideo(VideoRequestDTO videoRequestDTO);
     String deleteVideo(Long vno);
-    File convertMultipartFileToFile(MultipartFile multipartFile, String fileName);
+    File convertMultipartFileToFile(MultipartFile multipartFile, String fileName) throws IOException;
     UploadFileDTO uploadFileToS3(MultipartFile videoFile, MultipartFile jsonFile);
     void deleteFileFromS3(String guideVideoObjectPath, String jsonObjectPath, String thumbnailObjectPath);
     void setAcl(AmazonS3 s3, String ObjectPath);
