@@ -14,28 +14,32 @@ This model will be able to function in all areas that collect and utilize human 
 
 ## A Table of Contents
 * [1. Installation](#1-installation)
-  * [1.1 Git Clone](#11-git-clone)
-  * [1.2 Configuration](#12-configuration)
+  * [1.1. Git Clone](#11-git-clone)
+  * [1.2. Configuration](#12-configuration)
     * [application.yml](#applicationyml)
-  * [1.3 Build](#13-build)
+  * [1.3. Docker ](#13-dockerfile)
+  * [1.4. Build & Execute](#14-build--execute)
+    * [1.4.1. Condition ](#141-condition)
+    * [1.4.2. Local Environment](#142-local-environment)
+    * [1.4.3. Docker Environment](#143-docker-environment)
 * [2. Usage](#2-usage)
   * [2.1. Environment](#21-environment)
   * [2.2. Development](#22-development)
-* [3. How to test the software](#3-how-to-test-the-software)
-* [4. System Architecture](#4-system-architecture)
-* [5. Getting help](#5-getting-help)
-* [6. Documentation](#6-documentation)
-  * [6.1 NCP Object Storage ](#61-ncp-object-storage-)
-  * [6.2 Documentation2](#62-documentation-2)
-* [Open source licensing info](#open-source-licensing-info)
-* [References](#references)
+  * [2.3. Dependencies](#23-dependencies)
+* [3. System Architecture](#3-system-architecture)
+  * [3.1. Consumer Function Architecture](#31-consumer-function-architecture)
+  * [3.2. Admin Function Architecture](#32-admin-function-architecture)
+* [4. Documentation](#4-documentation)
+  * [4.1. NCP Object Storage ](#41-ncp-object-storage-)
+  * [4.2. Documentation2](#42-documentation-2)
+* [5. Open source Licensing Info](#5-open-source-licensing-info)
 
 ## 1. Installation
 
-### 1.1 Git Clone
+### 1.1. Git Clone
 `$ git clone https://github.com/MotuS-Web/MotuS-Backend.git`
 
-### 1.2 Configuration
+### 1.2. Configuration
 It needs to be modified to meet server specifications.
 
 #### application.yml
@@ -79,71 +83,96 @@ cloud:
       endpoint: https://kr.object.ncloudstorage.com
       bucket: {your-bucket}
 
-server:
-  ssl:
-    key-store: key-store-path
-    key-store-type: PKCS12
-    key-store-password: 1111
+```
 
+### 1.3. Dockerfile
+```dockerfile
+FROM openjdk:11-jdk
+
+# Create the app directory
+WORKDIR /app
+
+# Create a user account for running the app
+RUN addgroup --system dockeruser && adduser --system --ingroup dockeruser dockeruser
+
+# Change ownership of the /app folder to the new user account
+RUN chown -R dockeruser:dockeruser /app
+
+# Switch to the user account
+USER dockeruser
+
+# Specify the port to expose (default is 8080)
+ARG APP_PORT=8080
+EXPOSE ${APP_PORT}
+
+# Copy and set up the app JAR file (default is app.jar)
+ARG JAR_FILE=app.jar
+COPY ${JAR_FILE} app.jar
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
 
 ```
-### 1.3 Build
+
+### 1.4. Build & Execute
+
+#### 1.4.1. Condition
+- Database Connection
+  - Check the database connection you use
+
+- Object Storage Connection
+  - Check the object storage connection of the Naver Cloud Platform(NCP).
+  - Please refer to the [4.1. NCP Object Storage](#41-ncp-object-storage-)
+#### 1.4.2. Local Environment
 ```shell
 $ ./gradlew clean build -x test
 $ cd build/libs
 $ java -jar *.jar
 ```
 
+#### 1.4.3. Docker environment
+```shell
+$ ./gradlew clean build -x test
+$ docker build -t tag-name:1.0 .
+$ docker run -p 8080:8081 -d --name=app-name tag-name:1.0
+```
+
 ## 2. Usage
-#### 2.1. Environment
+### 2.1. Environment
 - InteliJ
 - Postman
 - Git Action
 - Git
 - Gradle
+- Raspberry PI 4B
 
-#### 2.2. Development
+### 2.2. Development
 - Spring-Boot
 - Java
-- NCP(Naver Cloud Platform)
+- Object Storage(Naver Cloud Platform)
 - MariaDB
-- .... writing...ETC
 
-## 3. How to test the software
-If the software includes automated tests, detail how to run those tests.
+### 2.3. Dependencies
+- QueryDsl
+- Spring-Data-JPA
+- Spring Security
+- JWT(Json Web Token)
+- WebSocket
+- Lombok
 
-## 4. System Architecture
+## 3. System Architecture
+### 3.1. Consumer Function Architecture
 
 
-## 5. Getting help
-#### Example
-If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker.
+### 3.2. Admin Function Architecture
 
-## 6. Documentation
-### 6.1 NCP Object Storage 
+## 4. Documentation
+### 4.1. NCP Object Storage 
 -  [ObjectStorageGuide_EN.md](docs/ObjectStorageGuide_EN.md)
 -  [ObjectStorageGuide_KO.md](docs/ObjectStorageGuide_KO.md)
-### 6.2 Documentation 2
 
+### 4.2. How to Contribute
+-  [How To Contribute?](docs/CONTRIBUTING.md)
 
----
-## Open source licensing info
-### Apache License 2.0
-- org.springframework.boot:spring-boot-starter-data-jpa
-- org.springframework.boot:spring-boot-starter-web
-- org.springframework.boot:spring-boot-devtools
-- org.springframework.boot:spring-boot-configuration-processor
-- org.springframework.boot:spring-boot-starter-test
-- org.springframework.boot:spring-boot-starter-validation
-- com.querydsl:querydsl-jpa
-- com.amazonaws:aws-java-sdk-s3:1.11.238
-### MIT License
-- org.projectlombok:lombok
-### FreeBSD
-- org.jcodec:jcodec:0.2.5
-### LGPL 2.1
-- org.mariadb.jdbc:mariadb-java-client
-
-## References
-1. asdf
-2. asdf
+## 5. Open source licensing info
+- [Apache License](LICENSE)
+- [Third Party License](LICENSE_3rd.md)
