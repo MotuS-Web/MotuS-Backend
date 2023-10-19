@@ -121,8 +121,8 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 
 ## 6. Documentation
 ### 6.1 NCP Object Storage 
--  [ObjectStorageGuide_EN.md](docs/ObjectStorageGuide_EN.md)
--  [ObjectStorageGuide_KO.md](docs/ObjectStorageGuide_KO.md)
+-  [ObjectStorageGuide_EN.md](ObjectStorageGuide_EN.md)
+-  [ObjectStorageGuide_KO.md](ObjectStorageGuide_KO.md)
 ### 6.2 Documentation 2
 
 
