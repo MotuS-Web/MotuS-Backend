@@ -7,8 +7,8 @@ scripts
 
 appspec.yml
 dbModeling.drawio
-ObjectStorageGuide_EN.md
-ObjectStorageGuide_KO.md
+docs/ObjectStorageGuide_EN.md
+docs/ObjectStorageGuide_KO.md
 README.md
 LICENSE
 
