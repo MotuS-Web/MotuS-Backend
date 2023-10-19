@@ -30,8 +30,8 @@ This model will be able to function in all areas that collect and utilize human 
   * [3.1. Consumer Function Architecture](#31-consumer-function-architecture)
   * [3.2. Admin Function Architecture](#32-admin-function-architecture)
 * [4. Documentation](#4-documentation)
-  * [4.1. NCP Object Storage ](#41-ncp-object-storage-)
-  * [4.2. Documentation2](#42-documentation-2)
+  * [4.1. NCP Object Storage ](#41-ncp-object-storage)
+  * [4.2. How to Contribute](#42-how-to-contribute)
 * [5. Open source Licensing Info](#5-open-source-licensing-info)
 
 ## 1. Installation
@@ -121,7 +121,7 @@ ENTRYPOINT ["java","-jar","/app/app.jar"]
 
 - Object Storage Connection
   - Check the object storage connection of the Naver Cloud Platform(NCP).
-  - Please refer to the [4.1. NCP Object Storage](#41-ncp-object-storage-)
+  - Please refer to the [4.1. NCP Object Storage](#41-ncp-object-storage)
 #### 1.4.2. Local Environment
 ```shell
 $ ./gradlew clean build -x test
@@ -169,7 +169,7 @@ $ docker run -p 8080:8081 -d --name=app-name tag-name:1.0
 ![image03](https://github.com/Sirius506775/MotuS-Backend/assets/80760160/165b4b59-43d6-4394-b999-0c1739828a70)
 
 ## 4. Documentation
-### 4.1. NCP Object Storage 
+### 4.1. NCP Object Storage
 -  [ObjectStorageGuide_EN.md](docs/ObjectStorageGuide_EN.md)
 -  [ObjectStorageGuide_KO.md](docs/ObjectStorageGuide_KO.md)
 
